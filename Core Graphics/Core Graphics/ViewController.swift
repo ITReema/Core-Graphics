@@ -42,6 +42,9 @@ class ViewController: UIViewController {
         case 4:
             drawLines()
             
+        case 5:
+            drawImagesAndText()
+            
         default:
             break
         }
@@ -148,6 +151,37 @@ class ViewController: UIViewController {
             ctx.cgContext.strokePath()
         }
         
+        imageView.image = img
+    }
+    
+    func drawImagesAndText() {
+        // 1: Create a renderer at the correct size
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 512, height: 512))
+        
+        let img = renderer.image { ctx in
+            // 2: Define a paragraph style that aligns text to the center.
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = .center
+            
+            // 3: Create an attributes dictionary containing that paragraph style, and also a font.
+            let attrs: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 36),
+                .paragraphStyle: paragraphStyle
+            ]
+            
+            // 4: Wrap that attributes dictionary and a string into an instance of NSAttributedString
+            let string = "The best-laid schemes o'\nmice an' men gang aft agley"
+            let attributedString = NSAttributedString(string: string, attributes: attrs)
+            
+            // 5: Load an image from the project and draw it to the context.
+            attributedString.draw(with: CGRect(x: 32, y: 32, width: 448, height: 448), options: .usesLineFragmentOrigin, context: nil)
+            
+            // 5: Update the image view with the finished result.
+            let mouse = UIImage(named: "mouse")
+            mouse?.draw(at: CGPoint(x: 300, y: 150))
+        }
+        
+        // 6
         imageView.image = img
     }
 }
